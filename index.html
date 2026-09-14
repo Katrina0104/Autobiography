@@ -1,0 +1,902 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="元智大學資訊學院學生林姿穎的作品集，聚焦 Unity VR 醫療訓練模擬與語音視覺問答輔助專案。">
+  <title>Katrina Lin</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800;900&family=Noto+Serif+TC:wght@700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f5f2ec;
+    --surface:#fffdf9;
+    --surface-2:#ece7dc;
+    --ink:#16141f;
+    --muted:#5c5870;
+    --accent:#5644d6;
+    --accent-ink:#ffffff;
+    --accent-2:#e9622f;
+    --line:#ddd6c6;
+    --line-strong:#c8bfab;
+    --shadow: 0 1px 0 rgba(22,20,31,.05);
+    --radius-s: 3px;
+    --radius-m: 4px;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#0d0c14;
+      --surface:#17151f;
+      --surface-2:#1e1c29;
+      --ink:#f1eee6;
+      --muted:#a29dbb;
+      --accent:#8b7bff;
+      --accent-ink:#0d0c14;
+      --accent-2:#ff8552;
+      --line:#2c2938;
+      --line-strong:#3c3850;
+      --shadow: 0 1px 0 rgba(0,0,0,.4);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0d0c14;
+    --surface:#17151f;
+    --surface-2:#1e1c29;
+    --ink:#f1eee6;
+    --muted:#a29dbb;
+    --accent:#8b7bff;
+    --accent-ink:#0d0c14;
+    --accent-2:#ff8552;
+    --line:#2c2938;
+    --line-strong:#3c3850;
+    --shadow: 0 1px 0 rgba(0,0,0,.4);
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:"Noto Sans TC","Noto Sans",sans-serif;
+    line-height:1.7;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{ background:var(--accent); color:var(--accent-ink); }
+
+  a{ color:inherit; }
+  img{ display:block; max-width:100%; }
+
+  .wrap{
+    max-width:1040px;
+    margin:0 auto;
+    padding-inline: clamp(20px, 5vw, 56px);
+  }
+
+  h1,h2,h3{ margin:0; font-weight:900; text-wrap:balance; }
+  p{ margin:0; }
+
+  .serif{ font-family:"Noto Serif TC", serif; }
+  .display{ font-family:"Unbounded","Noto Serif TC",serif; }
+  .mono{ font-family:"IBM Plex Mono", monospace; }
+
+  .eyebrow{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:"IBM Plex Mono", monospace;
+    font-size:.72rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:18px;
+  }
+  .eyebrow::before{
+    content:"";
+    width:7px; height:7px;
+    border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 20%, transparent);
+    flex:none;
+  }
+  .eyebrow .rule{
+    flex:1 1 auto;
+    height:1px;
+    background:var(--line-strong);
+    min-width:24px;
+  }
+
+  section{
+    padding-block: clamp(52px, 8vw, 96px);
+    border-bottom:1px solid var(--line);
+  }
+  section:last-of-type{ border-bottom:none; }
+
+  /* ---------- Nav mark ---------- */
+  .brandmark{
+    position:sticky; top:0; z-index:5;
+    background: color-mix(in srgb, var(--bg) 86%, transparent);
+    backdrop-filter: blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .brandmark .wrap{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-block:14px;
+    font-family:"IBM Plex Mono", monospace;
+    font-size:.72rem;
+    letter-spacing:.08em;
+    color:var(--muted);
+  }
+  .brandmark strong{ color:var(--ink); }
+  .brandmark .dot{ color:var(--accent); }
+  .brandmark nav{ display:flex; gap:20px; }
+  .brandmark nav a{ text-decoration:none; }
+  .brandmark nav a:hover{ color:var(--accent); }
+  .brandmark .navlinks{ display:flex; }
+  @media (max-width:640px){
+    .brandmark .navlinks{ display:none; }
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    padding-top: clamp(40px, 7vw, 76px);
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns: 1.35fr .9fr;
+    gap: clamp(28px, 5vw, 64px);
+    align-items:start;
+  }
+  @media (max-width:760px){
+    .hero-grid{ grid-template-columns:1fr; }
+  }
+  .hero h1.name-zh{
+    font-family:"Noto Serif TC", serif;
+    font-weight:900;
+    font-size: clamp(3rem, 9vw, 5.2rem);
+    line-height:1.02;
+    letter-spacing:.01em;
+  }
+  .hero .name-en{
+    font-family:"Unbounded", sans-serif;
+    font-weight:700;
+    font-size: clamp(.95rem, 1.8vw, 1.15rem);
+    letter-spacing:.28em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-top:14px;
+  }
+  .hero .role{
+    margin-top:18px;
+    color:var(--muted);
+    font-size:1.02rem;
+  }
+  .hero .quote{
+    margin-top: 34px;
+    font-family:"Noto Serif TC", serif;
+    font-weight:700;
+    font-size: clamp(1.25rem, 2.6vw, 1.62rem);
+    line-height:1.55;
+    max-width:30ch;
+    position:relative;
+    padding-left:22px;
+    border-left:3px solid var(--accent-2);
+  }
+
+  .hero-cta{
+    display:flex; gap:12px; flex-wrap:wrap;
+    margin-top:36px;
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:8px;
+    padding:11px 20px;
+    border-radius: var(--radius-s);
+    font-family:"IBM Plex Mono", monospace;
+    font-size:.78rem;
+    letter-spacing:.05em;
+    text-decoration:none;
+    border:1px solid var(--line-strong);
+    color:var(--ink);
+    transition: transform .15s ease, background .15s ease, border-color .15s ease;
+  }
+  .btn:hover{ transform:translateY(-1px); border-color:var(--accent); color:var(--accent); }
+  .btn.primary{
+    background:var(--accent);
+    color:var(--accent-ink);
+    border-color:var(--accent);
+  }
+  .btn.primary:hover{ color:var(--accent-ink); opacity:.92; }
+
+  /* portrait */
+  .portrait-wrap{
+    position:relative;
+    width:min(280px, 78%);
+    margin-inline:auto;
+  }
+  @media (min-width:761px){ .portrait-wrap{ margin-inline:0 0 0 auto; width:100%; max-width:300px; } }
+  .portrait-ring{
+    position:absolute;
+    inset:-16px;
+    border-radius:50%;
+    border:1.5px dashed color-mix(in srgb, var(--accent) 55%, transparent);
+    animation: spin 34s linear infinite;
+  }
+  @media (prefers-reduced-motion: reduce){ .portrait-ring{ animation:none; } }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  .portrait-photo{
+    position:relative;
+    aspect-ratio: 3/4;
+    border-radius:50%;
+    overflow:hidden;
+    border:1px solid var(--line-strong);
+    box-shadow: 0 18px 40px -18px color-mix(in srgb, var(--accent) 45%, transparent);
+  }
+  .portrait-photo img{ width:100%; height:100%; object-fit:cover; }
+
+  .meta-list{
+    margin-top:26px;
+    display:flex; flex-direction:column; gap:12px;
+  }
+  .meta-row{
+    display:flex; gap:10px;
+    font-size:.86rem;
+    padding-bottom:12px;
+    border-bottom:1px solid var(--line);
+  }
+  .meta-row:last-child{ border-bottom:none; padding-bottom:0; }
+  .meta-row .k{
+    font-family:"IBM Plex Mono", monospace;
+    color:var(--muted);
+    flex:none;
+    width:6.4em;
+    font-size:.72rem;
+    letter-spacing:.04em;
+    padding-top:.2em;
+  }
+  .meta-row .v{ color:var(--ink); }
+
+  /* ---------- About ---------- */
+  .about-body{
+    max-width:64ch;
+    font-size:1.05rem;
+  }
+  .about-body p + p{ margin-top:1.1em; }
+
+  .chips{
+    margin-top:32px;
+    display:flex; flex-wrap:wrap; gap:9px;
+  }
+  .chip{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:.74rem;
+    letter-spacing:.03em;
+    padding:6px 12px;
+    border:1px solid var(--line-strong);
+    border-radius:999px;
+    color:var(--muted);
+    background:var(--surface);
+  }
+
+  /* ---------- Featured cards ---------- */
+  .feat-intro{ max-width:56ch; color:var(--muted); margin-top:14px; font-size:1.02rem; }
+
+  .feat-card{
+    margin-top:34px;
+    border:1px solid var(--line-strong);
+    border-radius: var(--radius-m);
+    background:var(--surface);
+    overflow:hidden;
+    display:grid;
+    grid-template-columns: 1fr 1.55fr;
+  }
+  @media (max-width:760px){ .feat-card{ grid-template-columns:1fr; } }
+  .feat-visual{
+    position:relative;
+    background:var(--surface-2);
+    border-right:1px solid var(--line);
+    min-height:220px;
+    display:flex; align-items:center; justify-content:center;
+    padding:28px;
+  }
+  @media (max-width:760px){ .feat-visual{ border-right:none; border-bottom:1px solid var(--line); } }
+  .feat-body{ padding: clamp(22px,3vw,34px); }
+  .feat-tag{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:.72rem;
+    color:var(--accent);
+    letter-spacing:.05em;
+  }
+  .feat-title{
+    font-family:"Noto Serif TC", serif;
+    font-weight:900;
+    font-size:1.7rem;
+    margin-top:8px;
+  }
+  .feat-status{
+    display:inline-block;
+    margin-top:10px;
+    font-family:"IBM Plex Mono", monospace;
+    font-size:.7rem;
+    letter-spacing:.04em;
+    color:var(--accent-2);
+    border:1px solid color-mix(in srgb, var(--accent-2) 55%, transparent);
+    border-radius:999px;
+    padding:3px 10px;
+  }
+  .feat-desc{ margin-top:16px; color:var(--ink); font-size:.98rem; }
+  .feat-points{
+    margin-top:16px;
+    padding-left:0;
+    list-style:none;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .feat-points li{
+    font-size:.88rem;
+    color:var(--muted);
+    padding-left:16px;
+    position:relative;
+  }
+  .feat-points li::before{
+    content:"›";
+    position:absolute; left:0; top:0;
+    color:var(--accent-2);
+    font-family:"IBM Plex Mono", monospace;
+  }
+  .feat-tags{
+    margin-top:20px;
+    display:flex; flex-wrap:wrap; gap:8px;
+  }
+  .feat-tags span{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:.7rem;
+    color:var(--muted);
+  }
+  .feat-tags span:not(:last-child)::after{ content:"·"; margin-left:8px; color:var(--line-strong); }
+  .feat-link{
+    margin-top:20px;
+    display:inline-flex;
+  }
+
+  /* decorative svg visuals */
+  .viz{ width:100%; max-width:220px; }
+
+  /* ---------- Gamejam mini cards ---------- */
+  .mini-grid{
+    margin-top:30px;
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap:22px;
+  }
+  @media (max-width:640px){ .mini-grid{ grid-template-columns:1fr; } }
+  .mini-card{
+    border:1px solid var(--line-strong);
+    border-radius:var(--radius-m);
+    background:var(--surface);
+    overflow:hidden;
+  }
+  .mini-thumb{ aspect-ratio:16/9; overflow:hidden; background:var(--surface-2); position:relative; display:block; }
+  .mini-thumb img{ width:100%; height:100%; object-fit:cover; transition:transform .35s ease; }
+  .mini-thumb:hover img{ transform:scale(1.035); }
+  .mini-body{ padding:18px 20px 22px; }
+  .mini-meta{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:.68rem;
+    letter-spacing:.04em;
+    color:var(--accent);
+  }
+  .mini-title{ font-weight:900; font-size:1.06rem; margin-top:6px; }
+  .mini-desc{ margin-top:8px; font-size:.86rem; color:var(--muted); }
+  .demo-link{
+    margin-top:12px;
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:"IBM Plex Mono", monospace;
+    font-size:.72rem;
+    letter-spacing:.03em;
+    color:var(--accent);
+    text-decoration:none;
+  }
+  .demo-link:hover{ text-decoration:underline; }
+
+  /* play button overlay on thumbnails */
+  .play-dot{
+    position:absolute; right:12px; bottom:12px;
+    width:38px; height:38px; border-radius:50%;
+    background:rgba(15,13,10,.6);
+    display:flex; align-items:center; justify-content:center;
+    transition:transform .15s ease, background .15s ease;
+  }
+  .play-dot svg{ width:13px; height:13px; margin-left:2px; }
+  a:hover .play-dot{ transform:scale(1.1); background:var(--accent); }
+  .pcard .thumb .play-dot{ width:32px; height:32px; right:10px; bottom:10px; }
+  .pcard .thumb .play-dot svg{ width:11px; height:11px; }
+
+  /* ---------- Class project grid ---------- */
+  .grid4{
+    margin-top:30px;
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap:18px;
+  }
+  @media (max-width:900px){ .grid4{ grid-template-columns: repeat(2,1fr); } }
+  @media (max-width:480px){ .grid4{ grid-template-columns: 1fr; } }
+  .pcard{
+    border:1px solid var(--line);
+    border-radius:var(--radius-m);
+    overflow:hidden;
+    background:var(--surface);
+  }
+  .pcard .thumb{ aspect-ratio:16/9; overflow:hidden; background:var(--surface-2); position:relative; display:block; }
+  .pcard .thumb img{ width:100%; height:100%; object-fit:cover; transition:transform .35s ease; }
+  .pcard .thumb:hover img{ transform:scale(1.045); }
+  .pcard .pbody{ padding:14px 16px 18px; }
+  .pcard .ptag{ font-family:"IBM Plex Mono", monospace; font-size:.64rem; color:var(--muted); letter-spacing:.04em; }
+  .pcard .ptitle{ font-weight:700; margin-top:5px; font-size:.94rem; }
+  .pcard .pdesc{ margin-top:7px; font-size:.79rem; color:var(--muted); line-height:1.6; }
+
+  /* ---------- Timeline ---------- */
+  .tl-grid{
+    margin-top:34px;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap: clamp(24px,4vw,48px);
+  }
+  @media (max-width:700px){ .tl-grid{ grid-template-columns:1fr; } }
+  .tl-col h3{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:.76rem;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:var(--muted);
+    font-weight:500;
+    padding-bottom:12px;
+    border-bottom:1px solid var(--line-strong);
+  }
+  .tl-item{
+    padding:16px 0;
+    border-bottom:1px solid var(--line);
+    display:grid;
+    grid-template-columns: 6.4em 1fr;
+    gap:12px;
+  }
+  .tl-item .when{
+    font-family:"IBM Plex Mono", monospace;
+    font-size:.7rem;
+    color:var(--accent);
+    padding-top:.15em;
+  }
+  .tl-item .what b{ font-size:.94rem; }
+  .tl-item .what p{ margin-top:4px; font-size:.83rem; color:var(--muted); }
+  .tl-item .what ul{ margin:4px 0 0; padding-left:1.1em; font-size:.83rem; color:var(--muted); }
+  .tl-item .what li{ margin-top:2px; }
+
+  /* ---------- Footer ---------- */
+  footer{ padding-block: clamp(52px,8vw,88px); }
+  .footer-grid{
+    display:flex; justify-content:space-between; align-items:flex-end; gap:32px; flex-wrap:wrap;
+  }
+  .footer-heading{
+    font-family:"Noto Serif TC", serif;
+    font-weight:900;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    max-width:16ch;
+  }
+  .footer-links{
+    display:flex; flex-direction:column; gap:10px;
+    align-items:flex-start;
+  }
+  .footer-note{
+    margin-top:46px;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    font-family:"IBM Plex Mono", monospace;
+    font-size:.7rem;
+    color:var(--muted);
+    padding-top:20px;
+    border-top:1px solid var(--line);
+  }
+</style>
+</head>
+<body>
+
+
+<div class="brandmark">
+  <div class="wrap">
+    <span><strong>林姿穎</strong> <span class="dot">·</span> KATRINA_LIN</span>
+    <div class="navlinks">
+      <nav>
+        <a href="#about">關於</a>
+        <a href="#works">作品</a>
+        <a href="#timeline">經歷</a>
+        <a href="#contact">聯絡</a>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <p class="eyebrow"><span>[BOOT] PORTFOLIO.INIT</span><span class="rule"></span></p>
+        <h1 class="name-zh">林姿穎</h1>
+        <p class="name-en">Katrina Lin</p>
+        <p class="role">Unity／XR 開發者．元智大學 資訊學院英語學士班</p>
+        <p class="quote">「希望能親手創造出一個，<br>有別於現實的另一個世界。」</p>
+        <div class="hero-cta">
+          <a class="btn primary" href="mailto:katrina940104@gmail.com">:: 寄信給我</a>
+          <a class="btn" href="https://github.com/Katrina0104" target="_blank" rel="noopener">:: GitHub</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="portrait-wrap">
+          <div class="portrait-ring"></div>
+          <div class="portrait-photo">
+            <img src="images/portrait.jpg" alt="林姿穎 Katrina 的照片">
+          </div>
+        </div>
+        <div class="meta-list">
+          <div class="meta-row"><span class="k">LOCATION</span><span class="v">桃園市</span></div>
+          <div class="meta-row"><span class="k">STATUS</span><span class="v">元智大學資訊學院英語學士班・三年級</span></div>
+          <div class="meta-row"><span class="k">BUILDING</span><span class="v">VR 低溫治療訓練模擬（開發中）</span></div>
+          <div class="meta-row"><span class="k">HABIT</span><span class="v">社團 GameJam 常客・大一至今</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="about">
+  <div class="wrap">
+    <p class="eyebrow"><span>::ABOUT_ME</span><span class="rule"></span></p>
+    <h2 class="serif" style="font-size:clamp(1.5rem,3vw,2rem)">勇於挑戰，親手打造另一個世界</h2>
+    <div class="chips" style="margin-top:16px;">
+      <span class="chip" style="color:var(--accent-2); border-color:color-mix(in srgb, var(--accent-2) 55%, transparent);">ENFJ</span>
+      <span class="chip">外向</span>
+      <span class="chip">喜歡挑戰新事物</span>
+      <span class="chip">勇於學習</span>
+    </div>
+    <div class="about-body" style="margin-top:22px;">
+      <p>我是一位勇於接受挑戰的人，對未來懷抱著堅定的理想，並全心全意追求夢想——正是這份執著，引領我選擇就讀元智大學資訊學院英語學士班，展開技術與跨領域應用的探索旅程。</p>
+      <p>大學期間，我透過多門 Unity 開發課程建立扎實的實作基礎，並定期參與限時開發競賽（Game Jam），在高壓環境下磨練敏捷開發與團隊協作能力。我對沉浸式科技（VR/AR/MR）與數位學習系統懷抱高度熱情，再加上在打工時真正接觸過現在的國中生，所以心中始終有一個願望：利用沉浸式技術打破傳統學習的時空與資源限制，打造能讓學習者高效實踐、身歷其境的「模擬訓練環境」。</p>
+      <p>從早期運用 Vuforia 製作 AR 互動作品，到目前專注於「VR 醫療 SOP 模擬訓練系統」的開發並參與 AI 醫療長照應用競賽，我深刻體會到科技賦能教育的潛力。這些經驗讓我更確信，結合 3D 沉浸式互動與數據分析的數位學習領域，就是我實現理想的途徑——我期待將這份實作熱情化為實際行動，持續研發具備高度臨床與教育價值的前瞻學習系統。</p>
+    </div>
+    <div class="chips">
+      <span class="chip">C#</span>
+      <span class="chip">C++</span>
+      <span class="chip">Unity</span>
+      <span class="chip">OpenXR</span>
+      <span class="chip">XR Interaction Toolkit</span>
+      <span class="chip">Meta SDK</span>
+      <span class="chip">Vuforia</span>
+      <span class="chip">Python</span>
+      <span class="chip">PyTorch</span>
+      <span class="chip">Gradio</span>
+      <span class="chip">ChatGPT</span>
+      <span class="chip">GitHub / GitHub Desktop</span>
+    </div>
+    <div class="meta-list" style="margin-top:30px; max-width:420px;">
+      <div class="meta-row"><span class="k">ENGLISH</span><span class="v">聽・說・讀：中等／寫：略懂</span></div>
+      <div class="meta-row"><span class="k">日本語</span><span class="v">聽・說・讀・寫：略懂</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="works">
+  <div class="wrap">
+    <p class="eyebrow"><span>[SECTION] FEATURED_WORKS</span><span class="rule"></span></p>
+    <h2 class="serif" style="font-size:clamp(1.5rem,3vw,2rem)">精選專案</h2>
+    <p class="feat-intro">持續投入的核心作品，橫跨 VR 醫療訓練、AI 無障礙輔助與長照應用。</p>
+
+    <!-- Feature 1: VR hypothermia sim -->
+    <article class="feat-card">
+      <div class="feat-visual" style="padding:0;">
+        <img src="images/proj-vr-hypothermia.jpg" alt="VR 低溫治療訓練模擬畫面，VR 手柄操作病床上的患者角色" style="width:100%; height:100%; object-fit:cover;">
+      </div>
+      <div class="feat-body">
+        <p class="feat-tag">::VR_HYPOTHERMIA_SIM</p>
+        <h3 class="feat-title">VR 低溫治療訓練模擬</h3>
+        <span class="feat-status">開發中・大專生計畫投稿作品</span>
+        <p class="feat-desc">以 Unity 打造的 VR 醫療訓練模擬，讓受訓者在虛擬情境中演練低溫治療（therapeutic hypothermia）的完整流程。系統結合分支對話劇情、XR 實體按鈕互動與物理碰撞觸發，並規劃導入以隱馬可夫模型（HMM）為基礎的學習分析模組，追蹤操作熟悉度與流程瓶頸，作為診斷回饋。</p>
+        <ul class="feat-points">
+          <li>自訂 .txt 對話腳本格式，支援 <span class="mono">::LABEL</span>、<span class="mono">[IF:...]</span>、<span class="mono">JumpTo::</span> 等標籤語法的分支解析</li>
+          <li>三日事件情境架構，涵蓋設備故障、患者顫抖、血壓不穩等隨機支線</li>
+          <li>規劃中的學習分析模組：Familiarity Index 計時與操作瓶頸熱區分析</li>
+        </ul>
+        <div class="feat-tags">
+          <span>Unity</span><span>C#</span><span>XR Interaction Toolkit</span><span>TextMeshPro</span><span>有限狀態機</span><span>HMM 學習分析</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- Feature 2: VQA project -->
+    <article class="feat-card">
+      <div class="feat-visual">
+        <svg class="viz" viewBox="0 0 220 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="70" cy="70" r="34" stroke="var(--muted)" stroke-width="2"/>
+          <circle cx="70" cy="70" r="14" fill="var(--accent)"/>
+          <rect x="46" y="30" width="48" height="10" rx="3" fill="var(--surface)" stroke="var(--muted)" stroke-width="1.5"/>
+          <g stroke="var(--accent-2)" stroke-width="4" stroke-linecap="round">
+            <line x1="130" y1="70" x2="130" y2="70"/>
+            <line x1="145" y1="52" x2="145" y2="88"/>
+            <line x1="160" y1="36" x2="160" y2="104"/>
+            <line x1="175" y1="58" x2="175" y2="82"/>
+            <line x1="190" y1="44" x2="190" y2="96"/>
+          </g>
+        </svg>
+      </div>
+      <div class="feat-body">
+        <p class="feat-tag">::VQA_ASSISTANT</p>
+        <h3 class="feat-title">VQA-Project</h3>
+        <span class="feat-status">語音視覺問答輔助系統・無障礙 AI</span>
+        <p class="feat-desc">與 Jane、Nelda 共同開發的網頁應用，協助視障與低視能使用者「拍照提問、聽取回答」。系統整合 EVSSM 動態去模糊模組，修正手震造成的模糊影像，避免模型在看不清藥品標示、有效期限等資訊時產生錯誤推測；並以 Gemini 2.0 Flash 進行視覺問答推理，透過 Web Speech API 提供全程語音互動。</p>
+        <ul class="feat-points">
+          <li>EVSSM 去模糊：較 Real-ESRGAN 方案快約 11 倍（89ms vs 1.0s），同時保留文字可讀性</li>
+          <li>支援即時拍攝與圖片上傳雙輸入、詳細 / 簡答雙版本回覆</li>
+          <li>以 VizWiz 真實模糊照片與 GoPro 資料集進行端對端評估</li>
+        </ul>
+        <div class="feat-tags">
+          <span>Python</span><span>PyTorch</span><span>Gradio</span><span>Gemini 2.0 Flash</span><span>EVSSM</span><span>Web Speech API</span>
+        </div>
+        <a class="btn feat-link" href="https://github.com/Neldaaa/VQA-Project" target="_blank" rel="noopener">:: 查看原始碼</a>
+      </div>
+    </article>
+
+    <!-- Feature 3: AI eldercare -->
+    <article class="feat-card">
+      <div class="feat-visual">
+        <svg class="viz" viewBox="0 0 220 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="72" y="38" width="76" height="64" rx="10" fill="none" stroke="var(--accent)" stroke-width="2"/>
+          <path d="M72 50h-10M72 66h-10M72 82h-10M148 50h10M148 66h10M148 82h10" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="110" cy="70" r="4" fill="var(--accent)"/>
+          <polyline points="26,70 52,70 62,44 74,96 84,58 96,70 190,70" fill="none" stroke="var(--accent-2)" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+          <circle cx="26" cy="70" r="4" fill="var(--accent-2)"/>
+          <circle cx="190" cy="70" r="4" fill="var(--accent-2)"/>
+        </svg>
+      </div>
+      <div class="feat-body">
+        <p class="feat-tag">::AI_ELDERCARE</p>
+        <h3 class="feat-title">AI 長照輔助作品 「顧厝郎」</h3>
+        <span class="feat-status">開發中・AI 醫療長照競賽投稿企劃</span>
+        <p class="feat-desc">2026 全國健康科技創新創意競賽，斬獲第三名，延續對醫療照護場域的關注，此為結合AI環境偵測+掃地機器人之居家護理，開發時間未定</p>
+        <div class="feat-tags">
+          <span>AI 應用</span><span>長期照護</span><span>開發中</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- GameJam entries -->
+    <div style="margin-top:64px;">
+      <p class="eyebrow"><span>[LOG] GAMEJAM_ENTRIES</span><span class="rule"></span></p>
+      <h2 class="serif" style="font-size:clamp(1.3rem,2.6vw,1.7rem)">GameJam 即興創作</h2>
+      <p class="feat-intro">從大一至今持續參加社團 GameJam，在限時挑戰中反覆試錯、快速成形。部分作品原始碼收錄於 <a href="https://github.com/Feinky/Gamejam_shovel1" target="_blank" rel="noopener" style="color:var(--accent); text-decoration:underline;">GitHub</a>。</p>
+      <div class="mini-grid">
+        <div class="mini-card">
+          <a class="mini-thumb" href="https://youtu.be/OKIsWwTB74A?si=kSXCEsN5AYSG8dFE" target="_blank" rel="noopener" aria-label="觀看回合制策略遊戲操作影片">
+            <img src="images/proj-turnbased.jpg" alt="回合制策略遊戲畫面">
+            <span class="play-dot"><svg viewBox="0 0 12 14" xmlns="http://www.w3.org/2000/svg"><polygon points="0,0 12,7 0,14" fill="#fff"/></svg></span>
+          </a>
+          <div class="mini-body">
+            <p class="mini-meta">大二下 GAMEJAM・2 人團隊</p>
+            <p class="mini-title">回合制策略遊戲</p>
+            <p class="mini-desc">故事設定在遭感染的末日世界，主角需依靠夥伴合力破關。第一次嘗試回合制系統，學習 UI/UX 設計與狀態機建置。</p>
+            <a class="demo-link" href="https://youtu.be/OKIsWwTB74A?si=kSXCEsN5AYSG8dFE" target="_blank" rel="noopener">▶ 觀看操作影片</a>
+          </div>
+        </div>
+        <div class="mini-card">
+          <a class="mini-thumb" href="https://youtu.be/86ExRAa4LEk?si=kF1qiWqDdTN97TF-" target="_blank" rel="noopener" aria-label="觀看平台遊戲操作影片">
+            <img src="images/proj-platformer.jpg" alt="平台遊戲畫面">
+            <span class="play-dot"><svg viewBox="0 0 12 14" xmlns="http://www.w3.org/2000/svg"><polygon points="0,0 12,7 0,14" fill="#fff"/></svg></span>
+          </a>
+          <div class="mini-body">
+            <p class="mini-meta">大三上 GAMEJAM・3 人團隊</p>
+            <p class="mini-title">平台遊戲</p>
+            <p class="mini-desc">靈感源自「壺男」，以校園場景與真人角色重建遊戲畫面。學習 Joint 物理系統，並嘗試以 AI 輔助美術與畫面協作。</p>
+            <a class="demo-link" href="https://youtu.be/86ExRAa4LEk?si=kF1qiWqDdTN97TF-" target="_blank" rel="noopener">▶ 觀看操作影片</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Class projects -->
+    <div style="margin-top:64px;">
+      <p class="eyebrow"><span>[ARCHIVE] CLASS_PROJECTS</span><span class="rule"></span></p>
+      <h2 class="serif" style="font-size:clamp(1.3rem,2.6vw,1.7rem)">課堂練習作品</h2>
+      <div class="grid4">
+        <div class="pcard">
+          <a class="thumb" href="https://youtu.be/gfUXiF0666o?si=-fYENZcwCj9t-5xx" target="_blank" rel="noopener" aria-label="觀看射擊遊戲操作影片">
+            <img src="images/proj-shooter1.jpg" alt="射擊遊戲畫面">
+            <span class="play-dot"><svg viewBox="0 0 12 14" xmlns="http://www.w3.org/2000/svg"><polygon points="0,0 12,7 0,14" fill="#fff"/></svg></span>
+          </a>
+          <div class="pbody">
+            <p class="ptag">大一下・2 人</p>
+            <p class="ptitle">射擊遊戲</p>
+            <p class="pdesc">初次以 Unity3D 開發射擊遊戲，敵人從固定位置出擊，依擊殺數判定勝負，學習重疊相機與有限狀態機。</p>
+            <a class="demo-link" href="https://youtu.be/gfUXiF0666o?si=-fYENZcwCj9t-5xx" target="_blank" rel="noopener">▶ 觀看操作影片</a>
+          </div>
+        </div>
+        <div class="pcard">
+          <a class="thumb" href="https://youtu.be/LmqhUHhdwLU?si=OXz8s56hJ9R7pS7F" target="_blank" rel="noopener" aria-label="觀看2D遊戲操作影片">
+            <img src="images/proj-2d.jpg" alt="2D 遊戲畫面">
+            <span class="play-dot"><svg viewBox="0 0 12 14" xmlns="http://www.w3.org/2000/svg"><polygon points="0,0 12,7 0,14" fill="#fff"/></svg></span>
+          </a>
+          <div class="pbody">
+            <p class="ptag">大二下・個人</p>
+            <p class="ptitle">2D 遊戲</p>
+            <p class="pdesc">以簡易場景切換做出關卡升級效果，著重 2D UI 介面設計與基礎物理系統的應用。</p>
+            <a class="demo-link" href="https://youtu.be/LmqhUHhdwLU?si=OXz8s56hJ9R7pS7F" target="_blank" rel="noopener">▶ 觀看操作影片</a>
+          </div>
+        </div>
+        <div class="pcard">
+          <a class="thumb" href="https://youtu.be/D8lN-FrSxWU?si=QAfym-1Jw5MSlYTa" target="_blank" rel="noopener" aria-label="觀看3D射擊遊戲操作影片">
+            <img src="images/proj-shooter2.jpg" alt="3D 射擊遊戲畫面">
+            <span class="play-dot"><svg viewBox="0 0 12 14" xmlns="http://www.w3.org/2000/svg"><polygon points="0,0 12,7 0,14" fill="#fff"/></svg></span>
+          </a>
+          <div class="pbody">
+            <p class="ptag">大二下・4 人</p>
+            <p class="ptitle">3D 射擊遊戲</p>
+            <p class="pdesc">運用 Asset Store 免費資源搭建場景與敵人攻擊動畫，重新演練有限狀態機，並加入 UI 與生命值系統。</p>
+            <a class="demo-link" href="https://youtu.be/D8lN-FrSxWU?si=QAfym-1Jw5MSlYTa" target="_blank" rel="noopener">▶ 觀看操作影片</a>
+          </div>
+        </div>
+        <div class="pcard">
+          <a class="thumb" href="https://youtu.be/6F6oz-KHEAY?si=xmZvXuJOMV2oVs-w" target="_blank" rel="noopener" aria-label="觀看VR遊戲操作影片">
+            <img src="images/proj-vr.jpg" alt="VR 遊戲畫面">
+            <span class="play-dot"><svg viewBox="0 0 12 14" xmlns="http://www.w3.org/2000/svg"><polygon points="0,0 12,7 0,14" fill="#fff"/></svg></span>
+          </a>
+          <div class="pbody">
+            <p class="ptag">大三上・4 人</p>
+            <p class="ptitle">VR 遊戲</p>
+            <p class="pdesc">以 VR 手柄操作，參考《Nonhuman》，將校園場景與專案成員製成遊戲人物；透過監視器與實體按鈕控制人員進出，學習 Meta SDK 的整合應用。</p>
+            <a class="demo-link" href="https://youtu.be/6F6oz-KHEAY?si=xmZvXuJOMV2oVs-w" target="_blank" rel="noopener">▶ 觀看操作影片</a>
+          </div>
+        </div>
+        <div class="pcard">
+          <a class="thumb" href="https://youtu.be/ViVyV5WLXxw" target="_blank" rel="noopener" aria-label="觀看 ChatApp 操作影片" style="display:flex; align-items:center; justify-content:center;">
+            <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="14" width="38" height="27" rx="6" fill="none" stroke="var(--muted)" stroke-width="2.5"/>
+              <path d="M16 41 L16 50 L25 41" fill="none" stroke="var(--muted)" stroke-width="2.5" stroke-linejoin="round"/>
+              <rect x="27" y="27" width="37" height="25" rx="6" fill="var(--surface)" stroke="var(--accent)" stroke-width="2.5"/>
+              <path d="M56 52 L56 60 L47 52" fill="var(--surface)" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"/>
+              <circle cx="36" cy="39.5" r="2.1" fill="var(--accent)"/>
+              <circle cx="45.5" cy="39.5" r="2.1" fill="var(--accent)"/>
+              <circle cx="55" cy="39.5" r="2.1" fill="var(--accent)"/>
+            </svg>
+            <span class="play-dot"><svg viewBox="0 0 12 14" xmlns="http://www.w3.org/2000/svg"><polygon points="0,0 12,7 0,14" fill="#fff"/></svg></span>
+          </a>
+          <div class="pbody">
+            <p class="ptag">114-1・2 人</p>
+            <p class="ptitle">ChatApp 即時通訊軟體</p>
+            <p class="pdesc">伺服器專題課程作品，與 1 位同學共同開發的即時通訊應用，練習主從架構下的訊息傳遞與連線管理。</p>
+            <a class="demo-link" href="https://youtu.be/ViVyV5WLXxw" target="_blank" rel="noopener">▶ 觀看操作影片</a>
+          </div>
+        </div>
+        <div class="pcard">
+          <a class="thumb" href="https://katrina0104.github.io/animap.github.io/animap/templates/welcome_page.html" target="_blank" rel="noopener" aria-label="前往體驗 ANIMAP 網站">
+            <img src="images/proj-animap.jpg" alt="ANIMAP 網站歡迎畫面，可愛地球吉祥物與 START 按鈕">
+            <span class="play-dot"><svg viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg"><path d="M3 3h5.5M8.5 3v5.5M8.5 3L2.5 9" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span>
+          </a>
+          <div class="pbody">
+            <p class="ptag">2024・2 人</p>
+            <p class="ptitle">ANIMAP 世界地圖問答遊戲</p>
+            <p class="pdesc">大學網頁製作課程作品，與同學合作開發的互動世界地圖網站，可點選各國並挑戰限時地理知識問答，負責介面設計。</p>
+            <a class="demo-link" href="https://katrina0104.github.io/animap.github.io/animap/templates/welcome_page.html" target="_blank" rel="noopener">🔗 前往體驗網站</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="timeline">
+  <div class="wrap">
+    <p class="eyebrow"><span>[LOG] TIMELINE</span><span class="rule"></span></p>
+    <h2 class="serif" style="font-size:clamp(1.5rem,3vw,2rem)">經歷</h2>
+    <div class="tl-grid">
+      <div class="tl-col">
+        <h3>工作經歷</h3>
+        <div class="tl-item">
+          <span class="when">2025/09–現在</span>
+          <div class="what"><b>元智大學行政工讀生</b><p>協助秘書處理行政事務。</p></div>
+        </div>
+        <div class="tl-item">
+          <span class="when">2025/05–現在</span>
+          <div class="what"><b>弘盛補習班・數學／英文老師</b><p>國中數學輔導與英文教學，兼任國小安親班老師。</p></div>
+        </div>
+        <div class="tl-item">
+          <span class="when">2024/07–09</span>
+          <div class="what"><b>山姆英文・數學先修教師</b><p>教導國小生數學先修教材。</p></div>
+        </div>
+        <div class="tl-item">
+          <span class="when">2024/07–09</span>
+          <div class="what"><b>港嚼良好早餐店・外場服務生</b><p>外場服務與現場各項瑣事處理。</p></div>
+        </div>
+      </div>
+      <div class="tl-col">
+        <h3>重點活動</h3>
+        <div class="tl-item">
+          <span class="when">大學（現在）</span>
+          <div class="what">
+            <ul>
+              <li>實習中...(大四)</li>
+              <li>國中補習班英數老師(大二、大三)</li>
+              <li>系學會美宣組組長（大二）</li>
+              <li>大型活動副總召</li>
+              <li>與外籍同學前往小學交流文化，擔任翻譯</li>
+              <li>微電影演員、劇本編輯與剪輯</li>
+              <li>棒球社球經（大一）</li>
+              <li>遊戲創作社成員（大一至大二）</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tl-item">
+          <span class="when">高中</span>
+          <div class="what">
+            <ul>
+              <li>教育部活動總召，帶隊前往偏鄉小學舉辦科學營</li>
+              <li>台中自然科學博物館導覽志工</li>
+              <li>棒球社球經（高二）</li>
+            </ul>
+          </div>
+        </div>
+        <div class="tl-item">
+          <span class="when">國中</span>
+          <div class="what"><p>數學科展獲得優勝</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="availability">
+  <div class="wrap">
+    <p class="eyebrow"><span>[QUERY] AVAILABILITY</span><span class="rule"></span></p>
+    <h2 class="serif" style="font-size:clamp(1.5rem,3vw,2rem)">現正尋找的機會</h2>
+    <div class="tl-grid" style="margin-top:30px;">
+      <div>
+        <div class="meta-list">
+          <div class="meta-row"><span class="k">TYPE</span><span class="v">實習工讀・兼職工作</span></div>
+          <div class="meta-row"><span class="k">SCHEDULE</span><span class="v">日班・每週可排班 4 天・可配合輪班</span></div>
+          <div class="meta-row"><span class="k">START</span><span class="v">2026/07/01 起</span></div>
+          <div class="meta-row"><span class="k">RATE</span><span class="v">時薪 196 元以上</span></div>
+          <div class="meta-row"><span class="k">REMOTE</span><span class="v">對遠端工作有意願</span></div>
+        </div>
+      </div>
+      <div>
+        <p class="mono" style="font-size:.7rem; letter-spacing:.08em; color:var(--muted); text-transform:uppercase;">目標職類</p>
+        <div class="chips" style="margin-top:10px;">
+          <span class="chip">軟體工程師</span><span class="chip">AI 工程師</span><span class="chip">遊戲工程師</span><span class="chip">Internet 程式設計師</span><span class="chip">通訊軟體工程師</span>
+        </div>
+        <p class="mono" style="font-size:.7rem; letter-spacing:.08em; color:var(--muted); text-transform:uppercase; margin-top:22px;">希望地點</p>
+        <div class="chips" style="margin-top:10px;">
+          <span class="chip">桃園市</span><span class="chip">台北市</span><span class="chip">新北市</span><span class="chip">台中市</span><span class="chip">高雄市</span><span class="chip">南投縣草屯鎮</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <p class="eyebrow"><span>[END]</span><span class="rule"></span></p>
+    <div class="footer-grid">
+      <h2 class="footer-heading serif">對 VR 醫療訓練、遊戲開發或無障礙 AI 合作有興趣？歡迎與我聯繫。</h2>
+      <div class="footer-links">
+        <a class="btn primary" href="mailto:katrina940104@gmail.com">katrina940104@gmail.com</a>
+        <a class="btn" href="https://github.com/Katrina0104" target="_blank" rel="noopener">github.com/Katrina0104</a>
+        <span class="mono" style="font-size:.78rem; color:var(--muted);">0979-038-738・桃園市</span>
+      </div>
+    </div>
+    <div class="footer-note">
+      <span>© 2026 林姿穎 Katrina Lin</span>
+      <span>BUILT WITH UNITY, XR TOOLKIT &amp; A LOT OF GAMEJAM COFFEE</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
