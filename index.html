@@ -291,19 +291,22 @@
     border-radius: var(--radius-m);
     background:var(--surface);
     overflow:hidden;
-    display:grid;
-    grid-template-columns: 1fr 1.55fr;
+    display:flex;
+    flex-direction:column;
   }
-  @media (max-width:760px){ .feat-card{ grid-template-columns:1fr; } }
   .feat-visual{
     position:relative;
     background:var(--surface-2);
-    border-right:1px solid var(--line);
-    min-height:220px;
-    display:flex; align-items:center; justify-content:center;
-    padding:28px;
+    border-bottom:1px solid var(--line);
   }
-  @media (max-width:760px){ .feat-visual{ border-right:none; border-bottom:1px solid var(--line); } }
+  .feat-visual img{
+    display:block;
+    width:100%;
+    aspect-ratio:21 / 9;
+    object-fit:cover;
+    object-position:center;
+  }
+  @media (max-width:760px){ .feat-visual img{ aspect-ratio:16 / 9; } }
   .feat-body{ padding: clamp(22px,3vw,34px); }
   .feat-tag{
     font-family:"IBM Plex Mono", monospace;
@@ -361,6 +364,188 @@
     margin-top:20px;
     display:inline-flex;
   }
+
+  /* ---------- About: grade line chart ---------- */
+  .about-lead{ margin-top:18px; max-width:none; font-size:1.02rem; color:var(--ink); }
+  .grade-stats{
+    margin:16px 0 0;
+    display:grid; grid-template-columns:1.45fr 1fr 1fr 1fr; gap:12px;
+  }
+  @media (max-width:560px){ .grade-stats{ grid-template-columns:repeat(2, 1fr); row-gap:16px; }
+  }
+  .grade-stats > div{ border-left:2px solid var(--line); padding-left:12px; }
+  .grade-stats dt{ font-size:.72rem; color:var(--muted); }
+  .grade-stats dd{ margin:2px 0 0; font-family:"IBM Plex Mono", monospace; font-size:clamp(1.1rem,3.2vw,1.5rem); font-weight:500; color:var(--ink); }
+  .grade-stats dd small{ display:block; font-family:inherit; font-size:.7rem; color:var(--muted); font-weight:400; }
+  .grade-card{
+    margin:24px 0 26px;
+    max-width:860px;
+    border:1px solid var(--line-strong);
+    border-radius:var(--radius-m);
+    background:var(--surface);
+    padding:clamp(18px,3vw,28px);
+  }
+  .grade-eyebrow{ font-size:.7rem; color:var(--accent); letter-spacing:.04em; }
+  .grade-title{ margin-top:6px; font-size:1.15rem; font-weight:700; color:var(--ink); }
+  .grade-sub{ margin-top:2px; font-size:.85rem; color:var(--muted); }
+  .grade-charts{ margin-top:18px; display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+  @media (max-width:700px){ .grade-charts{ grid-template-columns:1fr; } }
+  .grade-panel{ min-width:0; }
+  .grade-panel-title{ font-size:.82rem; font-weight:700; color:var(--ink); }
+  .grade-panel-title span{ font-weight:400; color:var(--muted); font-size:.75rem; }
+  .grade-plot{ position:relative; margin-top:6px; }
+  .grade-svg{ display:block; max-width:100%; overflow:visible; touch-action:pan-y; }
+  .grade-svg .grid{ stroke:var(--line); stroke-width:1; }
+  .grade-svg .axis-text{ fill:var(--muted); font-size:11px; font-family:"IBM Plex Mono", monospace; }
+  .grade-svg .x-text{ fill:var(--muted); font-size:12px; }
+  .grade-svg .line{ fill:none; stroke:var(--accent); stroke-width:2; stroke-linejoin:round; stroke-linecap:round; }
+  .grade-svg .area{ fill:var(--accent); opacity:.08; }
+  .grade-svg .dot{ fill:var(--accent); stroke:var(--surface); stroke-width:2; }
+  .grade-svg .dot.is-active{ r:6; }
+  .grade-svg .cross{ stroke:var(--line-strong); stroke-width:1; stroke-dasharray:3 3; }
+  .grade-svg .label{ fill:var(--ink); font-size:12px; font-weight:700; font-family:"IBM Plex Mono", monospace; }
+  .grade-tip{
+    position:absolute; top:0;
+    transform:translate(-50%, -110%);
+    background:var(--ink); color:var(--bg);
+    border-radius:var(--radius-m);
+    padding:6px 10px;
+    font-size:.8rem; line-height:1.35;
+    white-space:nowrap;
+    pointer-events:none;
+  }
+  .grade-tip b{ font-family:"IBM Plex Mono", monospace; }
+  .grade-source{ margin-top:14px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px 16px; }
+  .grade-note{ margin:0; font-size:.7rem; color:var(--muted); }
+  .grade-dl{ display:flex; flex-wrap:wrap; gap:8px; }
+  .dl-btn{
+    display:inline-flex; align-items:center; gap:6px;
+    padding:6px 12px;
+    border:1px solid var(--line-strong);
+    border-radius:999px;
+    background:var(--surface);
+    color:var(--ink);
+    font-family:"IBM Plex Mono", monospace;
+    font-size:.72rem;
+    text-decoration:none;
+    transition:border-color .15s ease, color .15s ease, transform .15s ease;
+  }
+  .dl-btn:hover{ border-color:var(--accent); color:var(--accent); transform:translateY(-1px); }
+  .dl-btn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .grade-table-wrap{ margin-top:8px; }
+  .grade-table-wrap summary{ cursor:pointer; font-size:.72rem; color:var(--muted); }
+  .grade-table{ margin-top:8px; border-collapse:collapse; font-size:.85rem; }
+  .grade-table th, .grade-table td{ padding:4px 16px 4px 0; text-align:left; border-bottom:1px solid var(--line); }
+  .grade-table th{ color:var(--muted); font-weight:500; }
+  .grade-table td:last-child{ font-family:"IBM Plex Mono", monospace; }
+
+  /* ---------- 3D featured carousel ---------- */
+  .feat-carousel{ margin-top:30px; }
+  .fc-stage{
+    position:relative;
+    perspective:1700px;
+    perspective-origin:50% 35%;
+    overflow:hidden;
+    touch-action:pan-y;
+    cursor:grab;
+    user-select:none;
+    -webkit-user-select:none;
+    outline:none;
+    min-height:420px;
+  }
+  .fc-stage.is-dragging{ cursor:grabbing; }
+  .fc-stage:focus-visible{ box-shadow:0 0 0 2px var(--accent); border-radius:var(--radius-m); }
+  .fc-item{
+    position:absolute;
+    top:12px;
+    left:50%;
+    width:min(400px, 72%);
+    cursor:pointer;
+    margin:0 !important;
+    backface-visibility:hidden;
+    will-change:transform, opacity;
+    box-shadow:0 26px 50px -30px rgba(22,20,31,.5);
+  }
+  .fc-item::after{
+    content:"";
+    position:absolute; inset:0;
+    background:var(--bg);
+    opacity:var(--dim, 0);
+    pointer-events:none;
+  }
+  .fc-item .feat-visual{ border-bottom:none; }
+  .fc-item .feat-visual img{ aspect-ratio:4 / 3; -webkit-user-drag:none; pointer-events:none; }
+  .fc-item > .feat-body{ display:none; }            /* info only shows after clicking the photo */
+  .fc-cap{
+    position:absolute; left:0; right:0; bottom:0;
+    padding:28px 16px 12px;
+    background:linear-gradient(to top, rgba(13,12,20,.82), rgba(13,12,20,0));
+    color:#fff;
+    font-weight:700;
+    font-size:.95rem;
+    line-height:1.35;
+    pointer-events:none;
+  }
+  .fc-cap small{
+    display:block;
+    font-family:"IBM Plex Mono", monospace;
+    font-weight:400;
+    font-size:.66rem;
+    letter-spacing:.06em;
+    opacity:.75;
+    margin-bottom:2px;
+  }
+  .fc-stage{ min-height:0; }
+  .fc-detail{
+    margin:22px auto 0;
+    max-width:720px;
+    border:1px solid var(--line-strong);
+    border-radius:var(--radius-m);
+    background:var(--surface);
+    position:relative;
+    animation:fcIn .35s ease;
+  }
+  .fc-detail[hidden]{ display:none; }
+  .fc-close{
+    position:absolute; top:10px; right:10px;
+    width:32px; height:32px;
+    border-radius:50%;
+    border:1px solid var(--line);
+    background:var(--surface);
+    color:var(--muted);
+    cursor:pointer;
+  }
+  .fc-close:hover{ color:var(--accent); border-color:var(--accent); }
+  @keyframes fcIn{ from{ opacity:0; transform:translateY(-8px); } to{ opacity:1; transform:none; } }
+  @media (prefers-reduced-motion: reduce){ .fc-detail{ animation:none; } }
+  .fc-controls{
+    margin-top:6px;
+    display:flex; align-items:center; justify-content:center; gap:16px;
+  }
+  .fc-btn{
+    width:42px; height:42px;
+    border-radius:50%;
+    border:1px solid var(--line-strong);
+    background:var(--surface);
+    color:var(--ink);
+    font-size:1.05rem;
+    cursor:pointer;
+    transition:transform .15s ease, border-color .15s ease, color .15s ease;
+  }
+  .fc-btn:hover{ border-color:var(--accent); color:var(--accent); transform:translateY(-1px); }
+  .fc-btn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .fc-dots{ display:flex; gap:8px; }
+  .fc-dot{
+    width:8px; height:8px; padding:0;
+    border-radius:999px;
+    border:none;
+    background:var(--line-strong);
+    cursor:pointer;
+    transition:width .25s ease, background .25s ease;
+  }
+  .fc-dot[aria-selected="true"]{ width:26px; background:var(--accent); }
+  .fc-count{ font-size:.75rem; color:var(--muted); min-width:4.5em; text-align:center; }
+  .fc-hint{ margin-top:10px; text-align:center; font-size:.68rem; letter-spacing:.12em; color:var(--muted); opacity:.7; }
 
   /* decorative svg visuals */
   .viz{ width:100%; max-width:220px; }
@@ -475,22 +660,8 @@
   .tl-item .what li{ margin-top:2px; }
 
   /* ---------- Footer ---------- */
-  footer{ padding-block: clamp(52px,8vw,88px); }
-  .footer-grid{
-    display:flex; justify-content:space-between; align-items:flex-end; gap:32px; flex-wrap:wrap;
-  }
-  .footer-heading{
-    font-family:"Noto Serif TC", serif;
-    font-weight:900;
-    font-size: clamp(1.8rem, 4vw, 2.6rem);
-    max-width:16ch;
-  }
-  .footer-links{
-    display:flex; flex-direction:column; gap:10px;
-    align-items:flex-start;
-  }
+  footer{ padding-block: 8px 36px; }
   .footer-note{
-    margin-top:46px;
     display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
     font-family:"IBM Plex Mono", monospace;
     font-size:.7rem;
@@ -511,7 +682,6 @@
         <a href="#about">關於</a>
         <a href="#works">作品</a>
         <a href="#timeline">經歷</a>
-        <a href="#contact">聯絡</a>
       </nav>
     </div>
   </div>
@@ -525,7 +695,7 @@
         <h1 class="name-zh">林姿穎</h1>
         <p class="name-en">Katrina Lin</p>
         <p class="role">Unity／XR 開發者．元智大學 資訊學院英語學士班</p>
-        <p class="quote">「希望能親手創造出一個，<br>有別於現實的另一個世界。」</p>
+        <p class="quote">勇於接受挑戰的人，對未來懷抱著堅定的理想，並全心全意追求夢想</p>
         <div class="hero-cta">
           <a class="btn primary" href="mailto:katrina940104@gmail.com">:: 寄信給我</a>
           <a class="btn" href="https://github.com/Katrina0104" target="_blank" rel="noopener">:: GitHub</a>
@@ -560,11 +730,51 @@
       <span class="chip">喜歡挑戰新事物</span>
       <span class="chip">勇於學習</span>
     </div>
-    <div class="about-body" style="margin-top:22px;">
-      <p>我是一位勇於接受挑戰的人，對未來懷抱著堅定的理想，並全心全意追求夢想——正是這份執著，引領我選擇就讀元智大學資訊學院英語學士班，展開技術與跨領域應用的探索旅程。</p>
-      <p>大學期間，我透過多門 Unity 開發課程建立扎實的實作基礎，並定期參與限時開發競賽（Game Jam），在高壓環境下磨練敏捷開發與團隊協作能力。我對沉浸式科技（VR/AR/MR）與數位學習系統懷抱高度熱情，再加上在打工時真正接觸過現在的國中生，所以心中始終有一個願望：利用沉浸式技術打破傳統學習的時空與資源限制，打造能讓學習者高效實踐、身歷其境的「模擬訓練環境」。</p>
-      <p>從早期運用 Vuforia 製作 AR 互動作品，到目前專注於「VR 醫療 SOP 模擬訓練系統」的開發並參與 AI 醫療長照應用競賽，我深刻體會到科技賦能教育的潛力。這些經驗讓我更確信，結合 3D 沉浸式互動與數據分析的數位學習領域，就是我實現理想的途徑——我期待將這份實作熱情化為實際行動，持續研發具備高度臨床與教育價值的前瞻學習系統。</p>
-    </div>
+    <p class="about-lead">元智大學資訊學院英語學士班。專注 VR / AR 沉浸式學習系統，並以學習數據分析回饋教學設計。</p>
+    <figure class="grade-card" id="grade-chart">
+      <figcaption class="grade-head">
+        <p class="grade-eyebrow mono">::ACADEMIC_TREND</p>
+        <h3 class="grade-title">大學成績變化</h3>
+        <p class="grade-sub">大一至大三，各學期學業平均與班排名</p>
+      </figcaption>
+      <dl class="grade-stats">
+        <div><dt>累計 GPA</dt><dd data-stat="gpa">–</dd></div>
+        <div><dt>歷年學業平均</dt><dd data-stat="overall">–</dd></div>
+        <div><dt>歷年班排名</dt><dd data-stat="rank">–</dd></div>
+        <div><dt>學期平均進步</dt><dd data-stat="delta">–</dd></div>
+      </dl>
+      <div class="grade-charts">
+        <div class="grade-panel">
+          <p class="grade-panel-title">學期學業平均成績</p>
+          <div class="grade-plot" data-chart="avg">
+            <svg class="grade-svg" role="img"></svg>
+            <div class="grade-tip" role="status" aria-live="polite" hidden></div>
+          </div>
+        </div>
+        <div class="grade-panel">
+          <p class="grade-panel-title">學期班排名百分位 <span>（越高越前面）</span></p>
+          <div class="grade-plot" data-chart="rank">
+            <svg class="grade-svg" role="img"></svg>
+            <div class="grade-tip" role="status" aria-live="polite" hidden></div>
+          </div>
+        </div>
+      </div>
+      <div class="grade-source">
+        <p class="grade-note mono">資料來源：元智大學中、英文歷年成績表（2026/9 列印）</p>
+        <div class="grade-dl">
+          <a class="dl-btn" href="files/transcript-zh.pdf" download="林姿穎_歷年成績_中文.pdf" type="application/pdf">
+            <span aria-hidden="true">&#8615;</span> 中文成績單 PDF
+          </a>
+          <a class="dl-btn" href="files/transcript-en.pdf" download="Lin_Tzu-Ying_Transcript_EN.pdf" type="application/pdf">
+            <span aria-hidden="true">&#8615;</span> English Transcript PDF
+          </a>
+        </div>
+      </div>
+      <details class="grade-table-wrap">
+        <summary class="mono">查看數據表</summary>
+        <table class="grade-table"><thead><tr><th>學期</th><th>學業平均</th><th>班排名</th><th>百分位</th></tr></thead><tbody></tbody></table>
+      </details>
+    </figure>
     <div class="chips">
       <span class="chip">C#</span>
       <span class="chip">C++</span>
@@ -579,6 +789,7 @@
       <span class="chip">ChatGPT</span>
       <span class="chip">GitHub / GitHub Desktop</span>
     </div>
+
     <div class="meta-list" style="margin-top:30px; max-width:420px;">
       <div class="meta-row"><span class="k">ENGLISH</span><span class="v">聽・說・讀：中等／寫：略懂</span></div>
       <div class="meta-row"><span class="k">日本語</span><span class="v">聽・說・讀・寫：略懂</span></div>
@@ -592,10 +803,13 @@
     <h2 class="serif" style="font-size:clamp(1.5rem,3vw,2rem)">精選專案</h2>
     <p class="feat-intro">持續投入的核心作品，橫跨 VR 醫療訓練、AI 無障礙輔助與長照應用。</p>
 
+    <div class="feat-carousel" data-carousel>
+      <div class="fc-stage" tabindex="0" role="region" aria-roledescription="carousel" aria-label="精選專案（可左右滑動切換）">
+
     <!-- Feature 1: VR hypothermia sim -->
-    <article class="feat-card">
-      <div class="feat-visual" style="padding:0;">
-        <img src="images/proj-vr-hypothermia.jpg" alt="VR 低溫治療訓練模擬畫面，VR 手柄操作病床上的患者角色" style="width:100%; height:100%; object-fit:cover;">
+    <article class="feat-card fc-item">
+      <div class="feat-visual">
+        <img src="images/proj-vr-hypothermia.jpg" alt="VR 低溫治療訓練模擬畫面，VR 手柄操作病床上的患者角色">
       </div>
       <div class="feat-body">
         <p class="feat-tag">::VR_HYPOTHERMIA_SIM</p>
@@ -614,20 +828,9 @@
     </article>
 
     <!-- Feature 2: VQA project -->
-    <article class="feat-card">
+    <article class="feat-card fc-item">
       <div class="feat-visual">
-        <svg class="viz" viewBox="0 0 220 140" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="70" cy="70" r="34" stroke="var(--muted)" stroke-width="2"/>
-          <circle cx="70" cy="70" r="14" fill="var(--accent)"/>
-          <rect x="46" y="30" width="48" height="10" rx="3" fill="var(--surface)" stroke="var(--muted)" stroke-width="1.5"/>
-          <g stroke="var(--accent-2)" stroke-width="4" stroke-linecap="round">
-            <line x1="130" y1="70" x2="130" y2="70"/>
-            <line x1="145" y1="52" x2="145" y2="88"/>
-            <line x1="160" y1="36" x2="160" y2="104"/>
-            <line x1="175" y1="58" x2="175" y2="82"/>
-            <line x1="190" y1="44" x2="190" y2="96"/>
-          </g>
-        </svg>
+        <img src="images/VQA.png" alt="VQA-Project 界面畫面">
       </div>
       <div class="feat-body">
         <p class="feat-tag">::VQA_ASSISTANT</p>
@@ -642,21 +845,34 @@
         <div class="feat-tags">
           <span>Python</span><span>PyTorch</span><span>Gradio</span><span>Gemini 2.0 Flash</span><span>EVSSM</span><span>Web Speech API</span>
         </div>
-        <a class="btn feat-link" href="https://github.com/Neldaaa/VQA-Project" target="_blank" rel="noopener">:: 查看原始碼</a>
+      </div>
+    </article>
+
+    <!-- Feature 2: Strawberry Detect project -->
+    <article class="feat-card fc-item">
+      <div class="feat-visual">
+        <img src="images/yolov8.png" alt="Strawberry Detect project 界面畫面">
+      </div>
+      <div class="feat-body">
+        <p class="feat-tag">::STRAWBERRY_DETECT</p>
+        <h3 class="feat-title">Strawberry Detect</h3>
+        <span class="feat-status">農業 AI 應用・作物病害識別</span>
+        <p class="feat-desc">與小組共同開發的網頁應用，協助使用者「拍照提問、聽取回答」。系統整合 YOLOv8 物體檢測模型，實現對草莓病害的即時識別與分類。</p>
+        <ul class="feat-points">
+          <li>YOLOv8 物體檢測：偵測草莓熟程度，以顏色大小等等做區分</li>
+          <li>調整飽和度，運用黑灰色階進行更進一步的對比</li>
+          <li>以 自建 資料集進行端對端評估</li>
+        </ul>
+        <div class="feat-tags">
+          <span>Python</span><span>PyTorch</span><span>Gradio</span><span>Gemini 2.0 Flash</span><span>EVSSM</span><span>Web Speech API</span>
+        </div>
       </div>
     </article>
 
     <!-- Feature 3: AI eldercare -->
-    <article class="feat-card">
+    <article class="feat-card fc-item">
       <div class="feat-visual">
-        <svg class="viz" viewBox="0 0 220 140" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="72" y="38" width="76" height="64" rx="10" fill="none" stroke="var(--accent)" stroke-width="2"/>
-          <path d="M72 50h-10M72 66h-10M72 82h-10M148 50h10M148 66h10M148 82h10" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/>
-          <circle cx="110" cy="70" r="4" fill="var(--accent)"/>
-          <polyline points="26,70 52,70 62,44 74,96 84,58 96,70 190,70" fill="none" stroke="var(--accent-2)" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
-          <circle cx="26" cy="70" r="4" fill="var(--accent-2)"/>
-          <circle cx="190" cy="70" r="4" fill="var(--accent-2)"/>
-        </svg>
+        <img src="images/WIN3.png" alt="AI 長照輔助作品 「顧厝郎」畫面">
       </div>
       <div class="feat-body">
         <p class="feat-tag">::AI_ELDERCARE</p>
@@ -668,6 +884,20 @@
         </div>
       </div>
     </article>
+
+      </div>
+      <div class="fc-controls">
+        <button type="button" class="fc-btn" data-dir="-1" aria-label="上一個專案">&#8592;</button>
+        <div class="fc-dots" role="tablist" aria-label="選擇專案"></div>
+        <span class="fc-count mono" aria-live="polite">01 / 04</span>
+        <button type="button" class="fc-btn" data-dir="1" aria-label="下一個專案">&#8594;</button>
+      </div>
+      <p class="fc-hint mono">DRAG / SWIPE ↔ ・ 點擊照片查看介紹</p>
+      <div class="fc-detail" id="fc-detail" hidden>
+        <button type="button" class="fc-close" aria-label="關閉介紹">&#10005;</button>
+        <div class="fc-detail-body"></div>
+      </div>
+    </div>
 
     <!-- GameJam entries -->
     <div style="margin-top:64px;">
@@ -707,6 +937,30 @@
       <p class="eyebrow"><span>[ARCHIVE] CLASS_PROJECTS</span><span class="rule"></span></p>
       <h2 class="serif" style="font-size:clamp(1.3rem,2.6vw,1.7rem)">課堂練習作品</h2>
       <div class="grid4">
+                <div class="pcard">
+          <a class="thumb" href="https://youtu.be/ViVyV5WLXxw" target="_blank" rel="noopener" aria-label="觀看 ChatApp 操作影片" style="display:flex; align-items:center; justify-content:center;">
+            <img src="images/chatApp.png" alt="ChatApp 界面">
+            <span class="play-dot"><svg viewBox="0 0 12 14" xmlns="http://www.w3.org/2000/svg"><polygon points="0,0 12,7 0,14" fill="#fff"/></svg></span>
+          </a>
+          <div class="pbody">
+            <p class="ptag">114-1・2 人</p>
+            <p class="ptitle">ChatApp 即時通訊軟體</p>
+            <p class="pdesc">伺服器專題課程作品，與 1 位同學共同開發的即時通訊應用，練習主從架構下的訊息傳遞與連線管理。</p>
+            <a class="demo-link" href="https://youtu.be/ViVyV5WLXxw" target="_blank" rel="noopener">▶ 觀看操作影片</a>
+          </div>
+        </div>
+        <div class="pcard">
+          <a class="thumb" href="https://katrina0104.github.io/animap.github.io/animap/templates/welcome_page.html" target="_blank" rel="noopener" aria-label="前往體驗 ANIMAP 網站">
+            <img src="images/proj-animap.jpg" alt="ANIMAP 網站歡迎畫面，可愛地球吉祥物與 START 按鈕">
+            <span class="play-dot"><svg viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg"><path d="M3 3h5.5M8.5 3v5.5M8.5 3L2.5 9" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span>
+          </a>
+          <div class="pbody">
+            <p class="ptag">2024・2 人</p>
+            <p class="ptitle">ANIMAP 世界地圖問答遊戲</p>
+            <p class="pdesc">大學網頁製作課程作品，與同學合作開發的互動世界地圖網站，可點選各國並挑戰限時地理知識問答，負責介面設計。</p>
+            <a class="demo-link" href="https://katrina0104.github.io/animap.github.io/animap/templates/welcome_page.html" target="_blank" rel="noopener">🔗 前往體驗網站</a>
+          </div>
+        </div>
         <div class="pcard">
           <a class="thumb" href="https://youtu.be/gfUXiF0666o?si=-fYENZcwCj9t-5xx" target="_blank" rel="noopener" aria-label="觀看射擊遊戲操作影片">
             <img src="images/proj-shooter1.jpg" alt="射擊遊戲畫面">
@@ -753,38 +1007,6 @@
             <p class="ptitle">VR 遊戲</p>
             <p class="pdesc">以 VR 手柄操作，參考《Nonhuman》，將校園場景與專案成員製成遊戲人物；透過監視器與實體按鈕控制人員進出，學習 Meta SDK 的整合應用。</p>
             <a class="demo-link" href="https://youtu.be/6F6oz-KHEAY?si=xmZvXuJOMV2oVs-w" target="_blank" rel="noopener">▶ 觀看操作影片</a>
-          </div>
-        </div>
-        <div class="pcard">
-          <a class="thumb" href="https://youtu.be/ViVyV5WLXxw" target="_blank" rel="noopener" aria-label="觀看 ChatApp 操作影片" style="display:flex; align-items:center; justify-content:center;">
-            <svg width="72" height="72" viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <rect x="8" y="14" width="38" height="27" rx="6" fill="none" stroke="var(--muted)" stroke-width="2.5"/>
-              <path d="M16 41 L16 50 L25 41" fill="none" stroke="var(--muted)" stroke-width="2.5" stroke-linejoin="round"/>
-              <rect x="27" y="27" width="37" height="25" rx="6" fill="var(--surface)" stroke="var(--accent)" stroke-width="2.5"/>
-              <path d="M56 52 L56 60 L47 52" fill="var(--surface)" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"/>
-              <circle cx="36" cy="39.5" r="2.1" fill="var(--accent)"/>
-              <circle cx="45.5" cy="39.5" r="2.1" fill="var(--accent)"/>
-              <circle cx="55" cy="39.5" r="2.1" fill="var(--accent)"/>
-            </svg>
-            <span class="play-dot"><svg viewBox="0 0 12 14" xmlns="http://www.w3.org/2000/svg"><polygon points="0,0 12,7 0,14" fill="#fff"/></svg></span>
-          </a>
-          <div class="pbody">
-            <p class="ptag">114-1・2 人</p>
-            <p class="ptitle">ChatApp 即時通訊軟體</p>
-            <p class="pdesc">伺服器專題課程作品，與 1 位同學共同開發的即時通訊應用，練習主從架構下的訊息傳遞與連線管理。</p>
-            <a class="demo-link" href="https://youtu.be/ViVyV5WLXxw" target="_blank" rel="noopener">▶ 觀看操作影片</a>
-          </div>
-        </div>
-        <div class="pcard">
-          <a class="thumb" href="https://katrina0104.github.io/animap.github.io/animap/templates/welcome_page.html" target="_blank" rel="noopener" aria-label="前往體驗 ANIMAP 網站">
-            <img src="images/proj-animap.jpg" alt="ANIMAP 網站歡迎畫面，可愛地球吉祥物與 START 按鈕">
-            <span class="play-dot"><svg viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg"><path d="M3 3h5.5M8.5 3v5.5M8.5 3L2.5 9" stroke="#fff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg></span>
-          </a>
-          <div class="pbody">
-            <p class="ptag">2024・2 人</p>
-            <p class="ptitle">ANIMAP 世界地圖問答遊戲</p>
-            <p class="pdesc">大學網頁製作課程作品，與同學合作開發的互動世界地圖網站，可點選各國並挑戰限時地理知識問答，負責介面設計。</p>
-            <a class="demo-link" href="https://katrina0104.github.io/animap.github.io/animap/templates/welcome_page.html" target="_blank" rel="noopener">🔗 前往體驗網站</a>
           </div>
         </div>
       </div>
@@ -852,51 +1074,342 @@
   </div>
 </section>
 
-<section id="availability">
+<footer>
   <div class="wrap">
-    <p class="eyebrow"><span>[QUERY] AVAILABILITY</span><span class="rule"></span></p>
-    <h2 class="serif" style="font-size:clamp(1.5rem,3vw,2rem)">現正尋找的機會</h2>
-    <div class="tl-grid" style="margin-top:30px;">
-      <div>
-        <div class="meta-list">
-          <div class="meta-row"><span class="k">TYPE</span><span class="v">實習工讀・兼職工作</span></div>
-          <div class="meta-row"><span class="k">SCHEDULE</span><span class="v">日班・每週可排班 4 天・可配合輪班</span></div>
-          <div class="meta-row"><span class="k">START</span><span class="v">2026/07/01 起</span></div>
-          <div class="meta-row"><span class="k">RATE</span><span class="v">時薪 196 元以上</span></div>
-          <div class="meta-row"><span class="k">REMOTE</span><span class="v">對遠端工作有意願</span></div>
-        </div>
-      </div>
-      <div>
-        <p class="mono" style="font-size:.7rem; letter-spacing:.08em; color:var(--muted); text-transform:uppercase;">目標職類</p>
-        <div class="chips" style="margin-top:10px;">
-          <span class="chip">軟體工程師</span><span class="chip">AI 工程師</span><span class="chip">遊戲工程師</span><span class="chip">Internet 程式設計師</span><span class="chip">通訊軟體工程師</span>
-        </div>
-        <p class="mono" style="font-size:.7rem; letter-spacing:.08em; color:var(--muted); text-transform:uppercase; margin-top:22px;">希望地點</p>
-        <div class="chips" style="margin-top:10px;">
-          <span class="chip">桃園市</span><span class="chip">台北市</span><span class="chip">新北市</span><span class="chip">台中市</span><span class="chip">高雄市</span><span class="chip">南投縣草屯鎮</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer id="contact">
-  <div class="wrap">
-    <p class="eyebrow"><span>[END]</span><span class="rule"></span></p>
-    <div class="footer-grid">
-      <h2 class="footer-heading serif">對 VR 醫療訓練、遊戲開發或無障礙 AI 合作有興趣？歡迎與我聯繫。</h2>
-      <div class="footer-links">
-        <a class="btn primary" href="mailto:katrina940104@gmail.com">katrina940104@gmail.com</a>
-        <a class="btn" href="https://github.com/Katrina0104" target="_blank" rel="noopener">github.com/Katrina0104</a>
-        <span class="mono" style="font-size:.78rem; color:var(--muted);">0979-038-738・桃園市</span>
-      </div>
-    </div>
     <div class="footer-note">
       <span>© 2026 林姿穎 Katrina Lin</span>
-      <span>BUILT WITH UNITY, XR TOOLKIT &amp; A LOT OF GAMEJAM COFFEE</span>
+      <span>LEARNING ABOUT AI NOW</span>
     </div>
   </div>
 </footer>
+
+<script>
+/* About：大學成績變化（資料來源：元智大學歷年成績表，2026/9/10 列印）
+   新學期成績出來後，在 GRADES 加一行即可，圖表與數字會自動更新 */
+var GRADES = [
+  { term: '大一上', avg: 83.00, rank: 30, size: 58 },
+  { term: '大一下', avg: 88.43, rank: 20, size: 57 },
+  { term: '大二上', avg: 94.63, rank:  7, size: 54 },
+  { term: '大二下', avg: 92.42, rank:  6, size: 49 },
+  { term: '大三上', avg: 95.88, rank:  6, size: 47 },
+  { term: '大三下', avg: 95.77, rank:  9, size: 45 }
+];
+var OVERALL = { avg: 91.07, rank: 11, size: 45, upTo: '1142' };   // 歷年（計算到 1142）
+// GPA（英文成績單，2026/9/24 列印；4.0 制，按學年計）
+var GPA = { cumulative: 3.87, scale: 4.0, years: [ ['大一', 3.66], ['大二', 4.00], ['大三', 4.00] ] };
+
+(function(){
+  var fig = document.getElementById('grade-chart');
+  if(!fig || !GRADES.length) return;
+  var NS = 'http://www.w3.org/2000/svg';
+  var n = GRADES.length;
+  function pct(d){ return d.rank / d.size * 100; }
+
+  // ---- headline numbers ----
+  function setStat(key, main, sub){
+    var dd = fig.querySelector('[data-stat="' + key + '"]');
+    if(!dd) return;
+    dd.textContent = main;
+    if(sub){ var s = document.createElement('small'); s.textContent = sub; dd.appendChild(s); }
+  }
+  var first = GRADES[0], latest = GRADES[n-1];
+  var delta = latest.avg - first.avg;
+  setStat('gpa', GPA.cumulative.toFixed(2) + ' / ' + GPA.scale.toFixed(1),
+          GPA.years.map(function(y){ return y[0] + ' ' + y[1].toFixed(2); }).join('・'));
+  setStat('overall', OVERALL.avg.toFixed(2), '計算到 ' + OVERALL.upTo);
+  setStat('rank', OVERALL.rank + ' / ' + OVERALL.size, '前 ' + Math.round(OVERALL.rank / OVERALL.size * 100) + '%');
+  setStat('delta', (delta >= 0 ? '+' : '') + delta.toFixed(2), first.term + ' → ' + latest.term);
+
+  // ---- data table ----
+  var tb = fig.querySelector('.grade-table tbody');
+  GRADES.forEach(function(d){
+    var tr = document.createElement('tr');
+    [d.term, d.avg.toFixed(2), d.rank + ' / ' + d.size, '前 ' + Math.round(pct(d)) + '%'].forEach(function(v){
+      var td = document.createElement('td'); td.textContent = v; tr.appendChild(td);
+    });
+    tb.appendChild(tr);
+  });
+
+  // ---- reusable line chart (drawn in real pixels so text stays readable) ----
+  function lineChart(box, cfg){
+    var svg = box.querySelector('svg'), tip = box.querySelector('.grade-tip');
+    var W, H, m, pw, ph, pts = [], dots = [], cross;
+    function x(i){ return m.l + (n === 1 ? pw / 2 : i * pw / (n - 1)); }
+    // invert: smaller value drawn higher (used for rank)
+    function y(v){ var t = (v - cfg.min) / (cfg.max - cfg.min); return m.t + (cfg.invert ? t : 1 - t) * ph; }
+    function el(tag, attrs){
+      var e = document.createElementNS(NS, tag);
+      for(var k in attrs) e.setAttribute(k, attrs[k]);
+      svg.appendChild(e); return e;
+    }
+    function draw(){
+      W = Math.max(240, Math.round(box.clientWidth));
+      H = 210;
+      m = { t:24, r:20, b:32, l:46 };
+      pw = W - m.l - m.r; ph = H - m.t - m.b;
+      svg.innerHTML = '';
+      svg.setAttribute('viewBox', '0 0 ' + W + ' ' + H);
+      svg.setAttribute('width', W); svg.setAttribute('height', H);
+      svg.setAttribute('aria-label', cfg.desc);
+      cfg.ticks.forEach(function(v){
+        el('line', { class:'grid', x1:m.l, x2:W - m.r, y1:y(v), y2:y(v) });
+        el('text', { class:'axis-text', x:m.l - 8, y:y(v) + 4, 'text-anchor':'end' }).textContent = cfg.tick(v);
+      });
+      GRADES.forEach(function(d, i){
+        el('text', { class:'x-text', x:x(i), y:H - 8, 'text-anchor':'middle' }).textContent = d.term.replace('大', '');
+      });
+      pts = GRADES.map(function(d, i){ return [x(i), y(cfg.value(d))]; });
+      var path = pts.map(function(p, i){ return (i ? 'L' : 'M') + p[0].toFixed(1) + ' ' + p[1].toFixed(1); }).join(' ');
+      var base = y(cfg.invert ? cfg.max : cfg.min);
+      el('path', { class:'area', d: path + ' L' + pts[n-1][0] + ' ' + base + ' L' + pts[0][0] + ' ' + base + ' Z' });
+      cross = el('line', { class:'cross', y1:m.t, y2:m.t + ph, x1:0, x2:0, visibility:'hidden' });
+      el('path', { class:'line', d:path });
+      dots = pts.map(function(p){ return el('circle', { class:'dot', cx:p[0], cy:p[1], r:4.5 }); });
+      // direct labels: first and latest semester only
+      [0, n-1].forEach(function(i){
+        var below = cfg.labelBelow && cfg.labelBelow(i);
+        var t = el('text', { class:'label', x:pts[i][0], y:pts[i][1] + (below ? 18 : -10), 'text-anchor': i === 0 ? 'start' : 'end' });
+        t.textContent = cfg.label(GRADES[i]);
+      });
+      tip.hidden = true;
+    }
+    function show(i){
+      cross.setAttribute('x1', pts[i][0]); cross.setAttribute('x2', pts[i][0]);
+      cross.setAttribute('visibility', 'visible');
+      dots.forEach(function(c, k){ c.classList.toggle('is-active', k === i); });
+      tip.innerHTML = '';
+      cfg.tipLines(GRADES[i], GRADES[i-1]).forEach(function(line){
+        var div = document.createElement('div'); div.textContent = line; tip.appendChild(div);
+      });
+      tip.style.left = Math.min(Math.max(pts[i][0], 70), W - 70) + 'px';
+      tip.style.top = pts[i][1] + 'px';
+      tip.hidden = false;
+    }
+    function hide(){
+      if(cross) cross.setAttribute('visibility', 'hidden');
+      dots.forEach(function(c){ c.classList.remove('is-active'); });
+      tip.hidden = true;
+    }
+    function nearest(clientX){
+      var px = clientX - svg.getBoundingClientRect().left, best = 0;
+      pts.forEach(function(p, i){ if(Math.abs(p[0] - px) < Math.abs(pts[best][0] - px)) best = i; });
+      return best;
+    }
+    svg.addEventListener('pointermove', function(e){ show(nearest(e.clientX)); });
+    svg.addEventListener('pointerdown', function(e){ show(nearest(e.clientX)); });
+    svg.addEventListener('pointerleave', hide);
+    var lastW = 0;
+    function redraw(){ var w = Math.round(box.clientWidth); if(w && w !== lastW){ lastW = w; draw(); } }
+    window.addEventListener('resize', redraw);
+    redraw();
+  }
+
+  lineChart(fig.querySelector('[data-chart="avg"]'), {
+    desc: '各學期學業平均：' + GRADES.map(function(d){ return d.term + ' ' + d.avg.toFixed(2); }).join('、'),
+    value: function(d){ return d.avg; },
+    min: 76, max: 100, ticks: [80, 85, 90, 95, 100],
+    tick: function(v){ return String(v); },
+    label: function(d){ return d.avg.toFixed(2); },
+    labelBelow: function(){ return true; },
+    tipLines: function(d, prev){
+      var out = [d.term, '學業平均 ' + d.avg.toFixed(2)];
+      if(prev){ var c = d.avg - prev.avg; out.push((c >= 0 ? '▲ +' : '▼ ') + c.toFixed(2) + ' 較上學期'); }
+      return out;
+    }
+  });
+
+  lineChart(fig.querySelector('[data-chart="rank"]'), {
+    desc: '各學期班排名：' + GRADES.map(function(d){ return d.term + ' ' + d.rank + '/' + d.size; }).join('、'),
+    value: pct,
+    min: 0, max: 68, invert: true, ticks: [10, 30, 50],
+    tick: function(v){ return '前' + v + '%'; },
+    label: function(d){ return '前' + Math.round(pct(d)) + '%'; },
+    labelBelow: function(){ return true; },
+    tipLines: function(d){
+      return [d.term, '班排名 ' + d.rank + ' / ' + d.size, '前 ' + Math.round(pct(d)) + '%'];
+    }
+  });
+})();
+
+/* 3D ring carousel for 精選專案 */
+(function(){
+  var root = document.querySelector('[data-carousel]');
+  if(!root) return;
+  var stage = root.querySelector('.fc-stage');
+  var items = Array.prototype.slice.call(stage.querySelectorAll('.fc-item'));
+  var n = items.length;
+  if(!n) return;
+  var dotsBox = root.querySelector('.fc-dots');
+  var countEl = root.querySelector('.fc-count');
+  var STEP = 40 * Math.PI / 180;          // angle between cards on the ring
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var pos = 0, target = 0, raf = 0, current = -1;
+
+  function pad(v){ return (v < 10 ? '0' : '') + v; }
+  function offset(i, p){                  // shortest signed distance on the loop
+    var o = (i - p) % n;
+    if(o < -n/2) o += n;
+    if(o >= n/2) o -= n;
+    return o;
+  }
+  function idx(v){ return ((Math.round(v) % n) + n) % n; }
+
+  var dots = items.map(function(el, i){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'fc-dot';
+    b.setAttribute('role', 'tab');
+    var t = el.querySelector('.feat-title');
+    b.setAttribute('aria-label', t ? t.textContent : ('專案 ' + (i+1)));
+    b.addEventListener('click', function(){ goTo(i); });
+    dotsBox.appendChild(b);
+    return b;
+  });
+
+  // title caption over each photo
+  items.forEach(function(el){
+    var vis = el.querySelector('.feat-visual');
+    var t = el.querySelector('.feat-title'), tag = el.querySelector('.feat-tag');
+    if(!vis || !t) return;
+    var cap = document.createElement('div');
+    cap.className = 'fc-cap';
+    cap.innerHTML = (tag ? '<small></small>' : '') + '<span></span>';
+    if(tag) cap.querySelector('small').textContent = tag.textContent;
+    cap.querySelector('span').textContent = t.textContent;
+    vis.appendChild(cap);
+  });
+
+  // info panel (shown only after clicking the front photo)
+  var detail = root.querySelector('.fc-detail');
+  var detailBody = root.querySelector('.fc-detail-body');
+  function fillDetail(){
+    var body = items[current].querySelector('.feat-body');
+    detailBody.innerHTML = '';
+    if(body){ var c = body.cloneNode(true); c.removeAttribute('style'); detailBody.appendChild(c); }
+  }
+  function openDetail(){
+    fillDetail();
+    detail.hidden = false;
+    stage.setAttribute('aria-expanded', 'true');
+    requestAnimationFrame(function(){
+      detail.scrollIntoView({ block:'nearest', behavior: reduce ? 'auto' : 'smooth' });
+    });
+  }
+  function closeDetail(){ detail.hidden = true; stage.setAttribute('aria-expanded', 'false'); }
+  function toggleDetail(){ if(detail.hidden) openDetail(); else closeDetail(); }
+  root.querySelector('.fc-close').addEventListener('click', function(){ closeDetail(); stage.focus(); });
+
+  function fitHeight(){
+    var h = 0;
+    items.forEach(function(el){ h = Math.max(h, el.offsetHeight); });
+    stage.style.height = (h + 40) + 'px';
+  }
+
+  function render(){
+    var w = items[0].offsetWidth;
+    var R = w / (2 * Math.tan(STEP / 2)) * 1.06;
+    items.forEach(function(el, i){
+      var o = offset(i, pos), a = o * STEP, ao = Math.abs(o);
+      el.style.transform =
+        'translateX(-50%) translateX(' + (R * Math.sin(a)).toFixed(1) + 'px) ' +
+        'translateZ(' + (R * Math.cos(a) - R).toFixed(1) + 'px) rotateY(' + a.toFixed(4) + 'rad)';
+      el.style.opacity = ao > 1.4 ? Math.max(0, 1 - (ao - 1.4) * 2.5) : 1;
+      el.style.zIndex = String(100 - Math.round(ao * 10));
+      el.style.setProperty('--dim', Math.min(ao, 1) * 0.45);
+    });
+    var c = idx(pos);
+    if(c !== current){
+      current = c;
+      items.forEach(function(el, i){
+        var on = i === c;
+        el.setAttribute('aria-hidden', on ? 'false' : 'true');
+        dots[i].setAttribute('aria-selected', on ? 'true' : 'false');
+      });
+      countEl.textContent = pad(c + 1) + ' / ' + pad(n);
+      if(!detail.hidden) fillDetail();     // panel follows the ring while open
+    }
+  }
+
+  function tick(){
+    var d = target - pos;
+    if(reduce || Math.abs(d) < 0.001){ pos = target; render(); raf = 0; return; }
+    pos += d * 0.14;
+    render();
+    raf = requestAnimationFrame(tick);
+  }
+  function animate(){ if(!raf) raf = requestAnimationFrame(tick); }
+  function go(delta){ target = Math.round(target) + delta; animate(); }
+  function goTo(i){ target = Math.round(target) + offset(i, Math.round(target)); animate(); }
+
+  root.querySelectorAll('.fc-btn').forEach(function(b){
+    b.addEventListener('click', function(){ go(+b.getAttribute('data-dir')); });
+  });
+
+  stage.addEventListener('keydown', function(e){
+    if(e.key === 'ArrowRight'){ e.preventDefault(); go(1); }
+    else if(e.key === 'ArrowLeft'){ e.preventDefault(); go(-1); }
+    else if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleDetail(); }
+    else if(e.key === 'Escape'){ closeDetail(); }
+  });
+
+  // drag / swipe
+  var drag = null;
+  stage.addEventListener('pointerdown', function(e){
+    if(e.button !== 0) return;
+    drag = { x: e.clientX, y: e.clientY, start: pos, moved: false, id: e.pointerId,
+             card: e.target.closest('.fc-item') };
+  });
+  stage.addEventListener('pointermove', function(e){
+    if(!drag || e.pointerId !== drag.id) return;
+    var dx = e.clientX - drag.x;
+    if(!drag.moved){
+      if(Math.abs(dx) < 6) return;
+      if(Math.abs(e.clientY - drag.y) > Math.abs(dx)){ drag = null; return; } // vertical scroll
+      drag.moved = true;
+      stage.classList.add('is-dragging');
+      try{ stage.setPointerCapture(e.pointerId); }catch(_){}
+      cancelAnimationFrame(raf); raf = 0;
+    }
+    pos = target = drag.start - dx / (items[0].offsetWidth * 0.85);
+    render();
+  });
+  function endDrag(e){
+    if(!drag || e.pointerId !== drag.id) return;
+    var d = drag; drag = null;
+    stage.classList.remove('is-dragging');
+    if(d.moved){
+      var dx = e.clientX - d.x;
+      target = Math.round(pos);
+      if(target === Math.round(d.start) && Math.abs(dx) > 40) target -= Math.sign(dx);
+      animate();
+    } else if(d.card){
+      var i = items.indexOf(d.card);
+      if(i !== idx(target)) goTo(i);       // click a side photo to bring it forward
+      else toggleDetail();                 // click the front photo to show its info
+    }
+  }
+  stage.addEventListener('pointerup', endDrag);
+  stage.addEventListener('pointercancel', endDrag);
+
+  // horizontal trackpad / shift+wheel
+  var wheelAcc = 0, wheelLock = 0;
+  stage.addEventListener('wheel', function(e){
+    var dx = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : (e.shiftKey ? e.deltaY : 0);
+    if(!dx) return;
+    e.preventDefault();
+    var now = Date.now();
+    if(now < wheelLock) return;
+    wheelAcc += dx;
+    if(Math.abs(wheelAcc) > 50){ go(wheelAcc > 0 ? 1 : -1); wheelAcc = 0; wheelLock = now + 450; }
+  }, { passive:false });
+
+  window.addEventListener('resize', function(){ fitHeight(); render(); });
+  window.addEventListener('load', function(){ fitHeight(); render(); });
+  if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ fitHeight(); render(); });
+  fitHeight();
+  render();
+})();
+</script>
 
 </body>
 </html>
